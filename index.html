@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12233f">
+<title>صفوة المرسلين | بوابة الطالب والمدرس</title>
+<style>
+:root{--navy:#12233f;--blue:#2457a6;--cyan:#eaf2ff;--bg:#f4f7fb;--ink:#17243a;--muted:#68758a;--line:#e3e9f2;--white:#fff;--green:#16845b;--orange:#c4771b;--red:#b83a46}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;background:var(--blue);color:white;font-weight:700}
+button.secondary{background:#edf2fa;color:var(--navy)}button.ghost{background:transparent;color:var(--blue);padding:8px}
+.top{background:linear-gradient(120deg,#12233f,#244f8e);color:white;padding:22px max(18px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:#fff;color:var(--blue);display:grid;place-items:center;font-size:24px;font-weight:900}.brand h1{font-size:20px;margin:0}.brand p{margin:3px 0 0;color:#d4e2f8;font-size:12px}
+.wrap{max-width:1120px;margin:24px auto;padding:0 16px}.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 6px 24px #1c37600b}
+.login{max-width:520px;margin:48px auto}.login h2{margin:0 0 8px}.muted{color:var(--muted)}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:13px;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;color:var(--ink)}
+.notice{background:#fff8e9;border:1px solid #f4dfb5;color:#765019;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.7;margin-top:16px}
+.rolegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.role{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;color:var(--ink);text-align:right}.role.active{border:2px solid var(--blue);background:var(--cyan)}
+.hidden{display:none!important}.layout{display:grid;grid-template-columns:230px 1fr;gap:18px}.side{align-self:start}.side button{width:100%;text-align:right;margin:4px 0;background:transparent;color:var(--muted)}.side button.active{background:var(--cyan);color:var(--blue)}.content h2{margin:0 0 5px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#f8faff;border:1px solid var(--line);border-radius:15px;padding:16px}.stat b{font-size:25px;display:block;margin-top:5px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.section{margin-top:16px}.section h3{margin:0 0 12px;font-size:17px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:440px}th,td{text-align:right;padding:12px;border-bottom:1px solid var(--line);font-size:14px}th{color:var(--muted);font-size:12px;background:#fafbfd}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#e9f7f0;color:var(--green);font-size:12px}.pill.warn{background:#fff3df;color:var(--orange)}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}.formrow{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap}.item{padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.small{font-size:12px}.footer{text-align:center;color:#8994a6;padding:24px;font-size:12px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.side{display:flex;overflow:auto;gap:6px}.side button{white-space:nowrap;width:auto}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.top{padding:18px}.rolegrid{grid-template-columns:1fr}.formrow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><div class="logo">ص</div><div><h1>صفوة المرسلين</h1><p>بوابة الطالب والمدرس</p></div></div>
+ <div id="topActions" class="hidden"><button class="secondary" onclick="logout()">تسجيل الخروج</button></div>
+</header>
+
+<main id="loginView" class="wrap">
+ <section class="panel login">
+  <h2>مرحباً بك في بوابة صفوة</h2><p class="muted">اختر نوع الحساب للدخول إلى النسخة التجريبية.</p>
+  <div class="rolegrid">
+   <button class="role active" data-role="student" onclick="pickRole('student')">🎓 الطالب</button>
+   <button class="role" data-role="teacher" onclick="pickRole('teacher')">📚 المدرس</button>
+   <button class="role" data-role="admin" onclick="pickRole('admin')">🛡️ الإدارة</button>
+  </div>
+  <div class="field"><label>اسم المستخدم التجريبي</label><input id="username" placeholder="مثال: أحمد محمد" value="مستخدم تجريبي"></div>
+  <div class="field"><label>رمز الدخول التجريبي</label><input id="password" type="password" placeholder="أي رمز للعرض التجريبي"></div>
+  <button style="width:100%" onclick="login()">دخول إلى التطبيق</button>
+  <div class="notice"><b>تنبيه:</b> هذه نسخة أولية للعرض فقط. تسجيل الدخول والبيانات محلية على هذا الجهاز وليست نظام حسابات حقيقياً. لا تدخل أسماء أو درجات أو معلومات طلاب حقيقية الآن.</div>
+ </section>
+</main>
+
+<main id="appView" class="wrap hidden">
+ <div class="toolbar"><div><h2 id="welcome">لوحة التحكم</h2><span class="muted small" id="roleLabel"></span></div><span class="pill">نسخة تجريبية</span></div>
+ <div class="layout">
+  <nav class="panel side" id="nav"></nav>
+  <section class="panel content" id="screen"></section>
+ </div>
+</main>
+<div class="footer">صفوة المرسلين • نموذج أولي — يحتاج ربطاً آمناً بقاعدة بيانات قبل الاستخدام الفعلي</div>
+
+<script>
+let selectedRole='student', currentRole='student', currentName='مستخدم تجريبي', currentTab='home';
+const initialGrades=[
+ {student:'أحمد محمد',subject:'الرياضيات',exam:'الشهر الأول',score:88,total:100},
+ {student:'أحمد محمد',subject:'اللغة العربية',exam:'الشهر الأول',score:92,total:100},
+ {student:'سارة علي',subject:'العلوم',exam:'الشهر الأول',score:95,total:100}
+];
+const initialAnnouncements=[
+ {title:'مرحباً بكم في بوابة صفوة',body:'هذه نسخة تجريبية لعرض أقسام النظام.',date:'اليوم'},
+ {title:'متابعة الواجبات',body:'يمكن متابعة الواجبات من لوحة الطالب بعد تفعيل النظام.',date:'اليوم'}
+];
+function getData(k,def){try{return JSON.parse(localStorage.getItem('safwa_'+k))??def}catch(e){return def}}
+function setData(k,v){localStorage.setItem('safwa_'+k,JSON.stringify(v))}
+function pickRole(role){selectedRole=role;document.querySelectorAll('.role').forEach(b=>b.classList.toggle('active',b.dataset.role===role))}
+function login(){currentRole=selectedRole;currentName=document.getElementById('username').value.trim()||'مستخدم تجريبي';document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');document.getElementById('topActions').classList.remove('hidden');document.getElementById('welcome').textContent='أهلاً، '+currentName;document.getElementById('roleLabel').textContent=roleName(currentRole);currentTab='home';render()}
+function logout(){document.getElementById('appView').classList.add('hidden');document.getElementById('topActions').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden')}
+function roleName(r){return r==='student'?'حساب الطالب':r==='teacher'?'حساب المدرس':'حساب الإدارة'}
+function navItems(){let a=[['home','🏠 الرئيسية'],['grades','📊 الدرجات'],['attendance','🗓️ الحضور'],['tasks','📝 الواجبات'],['announcements','📢 الإعلانات']];if(currentRole!=='student')a.push(['manage','⚙️ إدارة البيانات']);return a}
+function render(){let nav=document.getElementById('nav');nav.innerHTML=navItems().map(([id,label])=>`<button class="${currentTab===id?'active':''}" onclick="go('${id}')">${label}</button>`).join('');let s=document.getElementById('screen');if(currentTab==='home')s.innerHTML=home();if(currentTab==='grades')s.innerHTML=grades();if(currentTab==='attendance')s.innerHTML=attendance();if(currentTab==='tasks')s.innerHTML=tasks();if(currentTab==='announcements')s.innerHTML=announcements();if(currentTab==='manage')s.innerHTML=manage();if(currentTab==='manage'&&currentRole==='student'){currentTab='home';render()}}
+function go(t){currentTab=t;render()}
+function home(){let g=getData('grades',initialGrades),a=getData('announcements',initialAnnouncements),att=getData('attendance',[]),tasks=getData('tasks',[]);let own=currentRole==='student'?g.filter(x=>x.student===currentName):g;return `<h2>الرئيسية</h2><p class="muted">ملخص سريع لمتابعة العملية التعليمية.</p><div class="stats"><div class="stat">سجلات الدرجات<b>${own.length}</b></div><div class="stat">سجلات الحضور<b>${att.length}</b></div><div class="stat">الواجبات<b>${tasks.length}</b></div></div><div class="grid2"><div class="section"><h3>آخر الإعلانات</h3>${a.slice(-3).reverse().map(x=>`<div class="item"><b>${esc(x.title)}</b><p class="muted small">${esc(x.body)}</p></div>`).join('')||'<p class="muted">لا توجد إعلانات.</p>'}</div><div class="section"><h3>روابط سريعة</h3><div class="item"><button class="secondary" onclick="go('grades')">عرض الدرجات</button></div><div class="item"><button class="secondary" onclick="go('attendance')">متابعة الحضور</button></div><div class="item"><button class="secondary" onclick="go('tasks')">عرض الواجبات</button></div></div></div>`}
+function grades(){let g=getData('grades',initialGrades);if(currentRole==='student')g=g.filter(x=>x.student===currentName);return `<div class="toolbar"><div><h2>الدرجات والنتائج</h2><p class="muted small">عرض نتائج المواد والامتحانات.</p></div>${currentRole!=='student'?'<button onclick="gradeForm()">+ إضافة درجة</button>':''}</div><div class="tablewrap"><table><thead><tr><th>الطالب</th><th>المادة</th><th>الامتحان</th><th>الدرجة</th></tr></thead><tbody>${g.map(x=>`<tr><td>${esc(x.student)}</td><td>${esc(x.subject)}</td><td>${esc(x.exam)}</td><td><b>${x.score}/${x.total}</b></td></tr>`).join('')||'<tr><td colspan="4">لا توجد درجات مسجلة لهذا الحساب.</td></tr>'}</tbody></table></div><div id="formSlot"></div>`}
+function gradeForm(){document.getElementById('formSlot').innerHTML=`<div class="section panel" style="background:#f8faff"><h3>إضافة درجة تجريبية</h3><div class="formrow"><div class="field"><label>اسم الطالب</label><input id="gstudent" placeholder="اسم الطالب"></div><div class="field"><label>المادة</label><input id="gsubject" placeholder="المادة"></div><div class="field"><label>الامتحان</label><input id="gexam" placeholder="مثلاً: الشهر الأول"></div><div class="field"><label>الدرجة / الدرجة الكلية</label><input id="gscore" type="number" placeholder="الدرجة"><input id="gtotal" type="number" value="100"></div></div><button onclick="saveGrade()">حفظ الدرجة</button></div>`}
+function saveGrade(){let g=getData('grades',initialGrades);let student=val('gstudent'),subject=val('gsubject'),exam=val('gexam'),score=Number(val('gscore')),total=Number(val('gtotal'));if(!student||!subject||!exam||!total||score<0||score>total)return alert('يرجى إدخال بيانات صحيحة.');g.push({student,subject,exam,score,total});setData('grades',g);render()}
+function attendance(){let a=getData('attendance',[]);if(currentRole==='student')a=a.filter(x=>x.student===currentName);return `<div class="toolbar"><div><h2>الحضور والغياب</h2><p class="muted small">متابعة سجل الحضور.</p></div>${currentRole!=='student'?'<button onclick="attendanceForm()">+ تسجيل حضور</button>':''}</div><div class="tablewrap"><table><thead><tr><th>الطالب</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>${a.map(x=>`<tr><td>${esc(x.student)}</td><td>${esc(x.date)}</td><td><span class="pill ${x.status==='غائب'?'warn':''}">${esc(x.status)}</span></td></tr>`).join('')||'<tr><td colspan="3">لا توجد سجلات حضور بعد.</td></tr>'}</tbody></table></div><div id="attSlot"></div>`}
+function attendanceForm(){document.getElementById('attSlot').innerHTML=`<div class="section panel" style="background:#f8faff"><h3>تسجيل الحضور</h3><div class="formrow"><div class="field"><label>اسم الطالب</label><input id="astudent"></div><div class="field"><label>التاريخ</label><input id="adate" type="date"></div><div class="field"><label>الحالة</label><select id="astatus"><option>حاضر</option><option>غائب</option><option>متأخر</option></select></div></div><button onclick="saveAttendance()">حفظ</button></div>`}
+function saveAttendance(){let a=getData('attendance',[]),student=val('astudent'),date=val('adate'),status=val('astatus');if(!student||!date)return alert('أدخل اسم الطالب والتاريخ.');a.push({student,date,status});setData('attendance',a);render()}
+function tasks(){let t=getData('tasks',[]);return `<div class="toolbar"><div><h2>الواجبات</h2><p class="muted small">الواجبات والمهام الدراسية.</p></div>${currentRole!=='student'?'<button onclick="taskForm()">+ إضافة واجب</button>':''}</div>${t.map(x=>`<div class="item"><b>${esc(x.title)}</b><p>${esc(x.body)}</p><span class="muted small">موعد التسليم: ${esc(x.due||'غير محدد')}</span></div>`).join('')||'<p class="muted">لا توجد واجبات منشورة.</p>'}<div id="taskSlot"></div>`}
+function taskForm(){document.getElementById('taskSlot').innerHTML=`<div class="section panel" style="background:#f8faff"><h3>واجب جديد</h3><div class="field"><label>عنوان الواجب</label><input id="ttitle"></div><div class="field"><label>التفاصيل</label><textarea id="tbody"></textarea></div><div class="field"><label>موعد التسليم</label><input id="tdue" type="date"></div><button onclick="saveTask()">نشر الواجب</button></div>`}
+function saveTask(){let t=getData('tasks',[]),title=val('ttitle'),body=val('tbody');if(!title||!body)return alert('أدخل عنوان الواجب وتفاصيله.');t.push({title,body,due:val('tdue')});setData('tasks',t);render()}
+function announcements(){let a=getData('announcements',initialAnnouncements);return `<div class="toolbar"><div><h2>الإعلانات</h2><p class="muted small">أخبار وتنبيهات مدرسة صفوة.</p></div>${currentRole!=='student'?'<button onclick="announcementForm()">+ إعلان جديد</button>':''}</div>${a.slice().reverse().map(x=>`<div class="item"><b>${esc(x.title)}</b><p>${esc(x.body)}</p><span class="muted small">${esc(x.date||'')}</span></div>`).join('')}<div id="annSlot"></div>`}
+function announcementForm(){document.getElementById('annSlot').innerHTML=`<div class="section panel" style="background:#f8faff"><h3>إعلان جديد</h3><div class="field"><label>العنوان</label><input id="antitle"></div><div class="field"><label>نص الإعلان</label><textarea id="anbody"></textarea></div><button onclick="saveAnnouncement()">نشر الإعلان</button></div>`}
+function saveAnnouncement(){let a=getData('announcements',initialAnnouncements),title=val('antitle'),body=val('anbody');if(!title||!body)return alert('أدخل العنوان والنص.');a.push({title,body,date:new Date().toLocaleDateString('ar-IQ')});setData('announcements',a);render()}
+function manage(){return `<h2>إدارة البيانات</h2><p class="muted">قسم تجريبي لإدارة بيانات مدرسة صفوة.</p><div class="notice">في النسخة المتصلة بقاعدة البيانات سنضيف إدارة الصفوف والشعب والمواد وحسابات الطلاب والمدرسين، مع صلاحيات منفصلة لكل دور.</div><div class="section"><h3>البيانات المحفوظة على هذا الجهاز</h3><div class="actions"><button class="secondary" onclick="exportData()">تصدير نسخة JSON</button><button class="secondary" onclick="resetData()">إعادة ضبط بيانات التجربة</button></div></div>`}
+function exportData(){let data={grades:getData('grades',initialGrades),attendance:getData('attendance',[]),tasks:getData('tasks',[]),announcements:getData('announcements',initialAnnouncements)};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='safwa-demo-data.json';a.click();URL.revokeObjectURL(a.href)}
+function resetData(){if(confirm('هل تريد حذف بيانات التجربة من هذا الجهاز؟')){['grades','attendance','tasks','announcements'].forEach(k=>localStorage.removeItem('safwa_'+k));render()}}
+function val(id){return document.getElementById(id)?.value?.trim()||''}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+</script>
+</body></html>
